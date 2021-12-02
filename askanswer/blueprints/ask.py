@@ -5,7 +5,6 @@ ask_bp = Blueprint('ask', __name__)
 
 
 @ask_bp.route('/ask')
-@login_required
 def ask():
     return render_template('edit/ask.html')
 

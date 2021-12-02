@@ -23,8 +23,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(30), unique=True)
     password_hash = db.Column(db.String(128))
 
-    questions = db.relationship('Question', backref='user')
-    answers = db.relationship('Answer', backref='user')
+    questions = db.relationship('Question', back_populates='user')
+    answers = db.relationship('Answer', back_populates='user')
 
     # password protection
     def set_password(self, password):
@@ -37,23 +37,31 @@ class User(db.Model, UserMixin):
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
-    questions = db.relationship('Question', backref='tag')
+    questions = db.relationship('Question', back_populates='tag')
 
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
     content = db.Column(db.String(2000))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
+    user = db.relationship('User', back_populates='questions')
 
-    answers = db.relationship('Answer', backref='question')
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
+    tag = db.relationship('Tag', back_populates='questions')
+
+    answers = db.relationship('Answer', back_populates='question')
 
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(4000))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', back_populates='answers')
+
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question = db.relationship('Question', back_populates='answers')

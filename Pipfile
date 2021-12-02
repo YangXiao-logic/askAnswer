@@ -12,8 +12,10 @@ jinja2 = "*"
 sqlalchemy = "*"
 flask-login = "*"
 flask-migrate = "*"
+bootstrap-flask = "*"
 
 [dev-packages]
+faker = "*"
 
 [requires]
 python_version = "3.9"
