@@ -26,7 +26,7 @@ def register():
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('todo.app'))
+        return redirect(url_for('home.index'))
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -39,7 +39,7 @@ def login():
             if user.validate_password(password):
                 login_user(user, remember)
                 flash('Login success.', 'info')
-                return redirect(url_for('todo.app'))
+                return redirect(url_for('home.index'))
             flash('Invalid username or password.')
         else:
             flash('No account.', 'warning')

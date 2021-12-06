@@ -1,0 +1,66 @@
+{% if questions %}
+    <div class="list-group mb-5">
+        {% for question in questions %}
+
+            <div class="d-grid gap-1 d-md-flex justify-content-md-end">
+                <a href="{{ url_for('home.show_question', question_id=question.id) }}"
+                   class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">{{ question.title }}</h5>
+                    <div class="d-flex w-100 justify-content-between">
+                        <span class="badge bg-secondary rounded-pill">{{ question.tag.name }}</span>
+                        <small>{{ moment(question.timestamp).format('LL') }} Asked
+                            by {{ question.user.username }}</small>
+                    </div>
+                </a>
+                <a class="btn btn-outline-success" href="{{ url_for('home.show_question', question_id=question.id) }}"
+                   role="button">{{ question.answer_num }} answers</a>
+
+            </div>
+
+        {% endfor %}
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <!-- previous page -->
+            {% if pagination.has_prev %}
+                <li class="page-item">
+                    <a class="page-link " href="{{ url_for('home.index', page=pagination.prev_num) }}"
+                       aria-label="Previous">
+                        <span class="text-dark" aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            <!-- all page numbers -->
+            {% for page_num in pagination.iter_pages() %}
+                {% if page_num %}
+                    {% if page_num != pagination.page %}
+                        <li class="page-item"><a class="page-link text-dark"
+                                                 href="{{ url_for('home.index', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link btn-dark"
+                               href="{{ url_for('home.index', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    {#                        <li>#}
+                    {#                            <span class="ellipsis"#}
+                    {#                                  style="white-space; nowrap; overflow: hidden; text-overflow: ellipsis">…</span>#}
+                    {#                        </li>#}
+                {% endif %}
+            {% endfor %}
+
+            <!-- next page -->
+            {% if pagination.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('home.index', page=pagination.next_num) }}" aria-label="Next">
+                        <span class="text-dark" aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+

@@ -4,6 +4,8 @@ from flask_moment import Moment
 from flask_wtf.csrf import CSRFProtect
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
+from flask_ckeditor import CKEditor
+from flask_whooshee import Whooshee
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -11,6 +13,8 @@ moment = Moment()
 csrf = CSRFProtect()
 migrate = Migrate()
 bootstrap = Bootstrap()
+ckeditor = CKEditor()
+whooshee = Whooshee()
 
 
 @login_manager.user_loader

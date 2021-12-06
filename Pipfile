@@ -13,6 +13,8 @@ sqlalchemy = "*"
 flask-login = "*"
 flask-migrate = "*"
 bootstrap-flask = "*"
+flask-ckeditor = "*"
+flask-whooshee = "*"
 
 [dev-packages]
 faker = "*"

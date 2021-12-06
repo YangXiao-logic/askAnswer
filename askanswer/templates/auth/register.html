@@ -1,30 +1,32 @@
 {% extends 'base.html' %}
-{% from 'bootstrap/form.html' import render_form %}
-
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" type="text/css">{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <img class="img-fluid" src="{{ url_for('static', filename='auth1.jpg') }}">
+    <div class="parent clearfix">
+        <div class="bg-illustration">
+            <img src="https://i.ibb.co/Pcg0Pk1/logo.png" alt="logo">
+
+            <div class="burger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-            <div class="col text-center position-relative">
-                <form class="form-signin position-absolute top-50 start-50 translate-middle" method="post">
-                    <h1 class="h3 mb-3 fw-normal">Please register</h1>
-                    {{ form.csrf_token }}
-                    <div class="form-floating">
-                        {{ form.username(class="form-control",id="floatingInput") }}
-                        {{ form.username.label(for="floatingInput") }}
-                    </div>
-                    <div class="form-floating">
-                        {{ form.password(class="form-control",id="floatingPassword") }}
-                        {{ form.password.label(for="floatingPassword") }}
-                    </div>
-                    <div class="form-floating">
-                        {{ form.password2(class="form-control",id="floatingPassword2") }}
-                        {{ form.password2.label(for="floatingPassword2") }}
-                    </div>
-                    {{ form.submit(class="w-100 mt-3 btn btn-lg btn-primary") }}
-                </form>
+
+        </div>
+
+        <div class="login">
+            <div class="container">
+                <h1>Login to access to<br/>your account</h1>
+
+                <div class="login-form">
+                    <form action="" method="post">
+                        {{ form.csrf_token }}
+                        {{ form.username(placeholder="Username") }}
+                        {{ form.password(placeholder="Password") }}
+                        {{ form.password2(placeholder="Confirm Password") }}
+                        {{ form.submit }}
+                    </form>
+                </div>
 
             </div>
         </div>

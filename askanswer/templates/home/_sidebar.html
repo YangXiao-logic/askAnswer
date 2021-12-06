@@ -1,32 +1,38 @@
-<ul id="slide-out" class="side-nav">
-    <li><a href="#!">第一导航链接</a></li>
-    <li><a href="#!">第二导航链接</a></li>
-    <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-            <li>
-                <a class="collapsible-header">下拉按钮<i class="material-icons">arrow_drop_down</i></a>
-                <div class="collapsible-body">
-                    <ul>
-                        <li><a href="#!">一</a></li>
-                        <li><a href="#!">二</a></li>
-                        <li><a href="#!">三</a></li>
-                        <li><a href="#!">四</a></li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </li>
-</ul>
-<ul class="right hide-on-med-and-down">
-    <li><a href="#!">第一导航链接</a></li>
-    <li><a href="#!">第二导航链接</a></li>
-    <li><a class="dropdown-button" href="#!" data-activates="dropdown1">下拉按钮<i class="material-icons right">arrow_drop_down</i></a>
-    </li>
-    <ul id='dropdown1' class='dropdown-content'>
-        <li><a href="#!">一</a></li>
-        <li><a href="#!">二</a></li>
-        <li><a href="#!">三</a></li>
-        <li><a href="#!">四</a></li>
+{% block content %}{% endblock %}
+<div class="flex-shrink-0 p-3 bg-white">
+    <a href="{{ url_for('home.index') }}" class="d-flex pb-3 mb-3 link-dark text-decoration-none border-bottom">
+        <span class="fs-5 fw-semibold text-center offset-sm-1">Home</span>
+    </a>
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                    data-bs-target="#home-collapse" aria-expanded="true">
+                Most popular tags
+            </button>
+            <div class="collapse show" id="home-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    {% for tag in most_popular_tags %}
+                        <li><a href="{{ url_for('home.show_tag',tag_id=tag.id) }}"
+                               class="link-dark rounded">{{ tag.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                    data-bs-target="#dashboard-collapse" aria-expanded="false">
+                Most active users
+            </button>
+            <div class="collapse" id="dashboard-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    {% for user in most_active_users %}
+                        <li><a href="{{ url_for('personal.show_personal_question',user_id=user.id ) }}"
+                               class="link-dark rounded">{{ user.username }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+        <li class="border-top my-3"></li>
+
     </ul>
-</ul>
-<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+</div>

@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
+from flask_ckeditor import CKEditorField
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, Regexp, ValidationError
-from askanswer.models import User
+from askanswer.models import User, Tag
 
 
 class RegisterForm(FlaskForm):
@@ -27,4 +28,11 @@ class LoginForm(FlaskForm):
 
 class QuestionForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(1, 128)])
-    content = StringField('Content')
+    content = CKEditorField('Content', validators=[DataRequired()])
+    tag = SelectField('Tag', coerce=int, default=1)
+    publish = SubmitField('Publish')
+
+    def __init__(self, *args, **kwargs):
+        super(QuestionForm, self).__init__(*args, **kwargs)
+        self.tag.choices = [(tag.id, tag.name)
+                            for tag in Tag.query.order_by(Tag.name).all()]

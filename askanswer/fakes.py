@@ -8,7 +8,7 @@ from askanswer.models import User, Tag, Question, Answer
 fake = Faker()
 
 
-def fake_users(count=5):
+def fake_users(count=15):
     for i in range(count):
         user = User(username=fake.name())
         user.set_password('123456')
@@ -22,12 +22,12 @@ def fake_users(count=5):
 def fake_tags():
     tags = ['python', 'c', 'c++', 'java', 'html', 'javaScript', 'css']
     for name in tags:
-        tag = Tag(name=name)
+        tag = Tag(name=name, content=fake.paragraph())
         db.session.add(tag)
     db.session.commit()
 
 
-def fake_questions(count=30):
+def fake_questions(count=100):
     for i in range(count):
         user = User.query.get(random.randint(1, User.query.count()))
         tag = Tag.query.get(random.randint(1, Tag.query.count()))
@@ -37,16 +37,22 @@ def fake_questions(count=30):
                             tag=tag,
                             user=user
                             )
+        tag.question_num += 1
+        user.question_num += 1
         db.session.add(question)
     db.session.commit()
 
 
-def fake_answers(count=100):
+def fake_answers(count=300):
     for i in range(count):
+        user = User.query.get(random.randint(1, User.query.count()))
         question = Question.query.get(random.randint(1, Question.query.count()))
         answer = Answer(content=fake.paragraph(nb_sentences=20),
                         timestamp=fake.date_time_this_century(),
-                        question=question
+                        question=question,
+                        user=user
                         )
+        user.answer_num += 1
+        question.answer_num += 1
         db.session.add(answer)
     db.session.commit()

@@ -2,8 +2,9 @@ from datetime import datetime
 
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from askanswer.extension import whooshee
 from askanswer.extension import db
+
 
 
 class Admin(db.Model, UserMixin):
@@ -25,6 +26,8 @@ class User(db.Model, UserMixin):
 
     questions = db.relationship('Question', back_populates='user')
     answers = db.relationship('Answer', back_populates='user')
+    question_num = db.Column(db.Integer, default=0)
+    answer_num = db.Column(db.Integer, default=0)
 
     # password protection
     def set_password(self, password):
@@ -36,14 +39,17 @@ class User(db.Model, UserMixin):
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))
+    name = db.Column(db.String(128), index=True)
+    content = db.Column(db.String(512))
     questions = db.relationship('Question', back_populates='tag')
+    question_num = db.Column(db.Integer, default=0)
 
 
+@whooshee.register_model('title')
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128))
-    content = db.Column(db.String(2000))
+    title = db.Column(db.String(128), index=True)
+    content = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -53,11 +59,12 @@ class Question(db.Model):
     tag = db.relationship('Tag', back_populates='questions')
 
     answers = db.relationship('Answer', back_populates='question')
+    answer_num = db.Column(db.Integer, default=0)
 
 
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(4000))
+    content = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

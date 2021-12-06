@@ -4,14 +4,16 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 from flask import Flask, request
 from flask_login import current_user
 
-from askanswer.extension import db, login_manager, moment, csrf, migrate, bootstrap
+from askanswer.extension import db, login_manager, moment, csrf, migrate, bootstrap, ckeditor, whooshee
+from askanswer.models import Question, User, Answer, Tag
 from askanswer.setting import config
 from askanswer.blueprints.auth import auth_bp
 from askanswer.blueprints.home import home_bp
-from askanswer.blueprints.ask import ask_bp
+from askanswer.blueprints.personal import personal_bp
 import click
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
 
 def create_app(config_name=None):
     if config_name is None:
@@ -23,6 +25,8 @@ def create_app(config_name=None):
     register_extensions(app)
     register_blueprints(app)
     register_command(app)
+    register_shell_context(app)
+    register_template_context(app)
     return app
 
 
@@ -57,13 +61,28 @@ def register_extensions(app):
     csrf.init_app(app)
     migrate.init_app(app, db)
     bootstrap.init_app(app)
+    ckeditor.init_app(app)
+    whooshee.init_app(app)
 
 
 def register_blueprints(app):
     app.register_blueprint(home_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(ask_bp, url_prefix='/ask')
+    app.register_blueprint(personal_bp, url_prefix='/personal')
 
+
+def register_template_context(app):
+    @app.context_processor
+    def make_template_context():
+        most_popular_tags = Tag.query.order_by(Tag.question_num.desc()).all()[0:5]
+        most_active_users = User.query.order_by((User.question_num + User.answer_num).desc())[0:5]
+        return dict(most_active_users=most_active_users, most_popular_tags=most_popular_tags)
+
+
+def register_shell_context(app):
+    @app.shell_context_processor
+    def make_shell_context():
+        return dict(db=db, Question=Question, User=User, Answer=Answer, Tag=Tag)
 
 
 def register_command(app):

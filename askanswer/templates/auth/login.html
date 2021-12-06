@@ -1,35 +1,38 @@
 {% extends 'base.html' %}
-{% from 'bootstrap/form.html' import render_form %}
-
-
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" type="text/css">{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <img class="img-fluid" src="{{ url_for('static', filename='auth1.jpg') }}">
-            </div>
-            <div class="col text-center position-relative">
-                <form class="form-signin position-absolute top-50 start-50 translate-middle" method="post">
-                    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-                    {{ form.csrf_token }}
-                    <div class="form-floating">
-                        {{ form.username(class="form-control",id="floatingInput") }}
-                        {{ form.username.label(for="floatingInput") }}
-                    </div>
-                    <div class="form-floating">
-                        {{ form.password(class="form-control",id="floatingPassword") }}
-                        {{ form.password.label(for="floatingPassword") }}
-                    </div>
+    <div class="parent clearfix">
+        <div class="bg-illustration">
+            <img src="https://i.ibb.co/Pcg0Pk1/logo.png" alt="logo">
 
-                    <div class="checkbox mb-3">
-                        <label>
+            <div class="burger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
+
+        <div class="login">
+            <div class="container">
+                <h1>Login to access to<br/>your account</h1>
+
+                <div class="login-form">
+                    <form action="" method="post">
+                        {{ form.csrf_token }}
+                        {{ form.username(placeholder="Username") }}
+                        {{ form.password(placeholder="Password") }}
+                        <div class="remember-form">
                             {{ form.remember }}
-                            {{ form.remember.label }}
-                        </label>
-                    </div>
-                    {{ form.submit(class="w-100 btn btn-lg btn-primary") }}
-                    <p>Have no account?<a href="{{ url_for('.register') }}">Register</a>here</p>
-                </form>
+                            <span>Remember me</span>
+                        </div>
+                        <div class="forget-pass">
+                            <a href="{{ url_for('auth.register') }}">Without account? Register here</a>
+                        </div>
+                        {{ form.submit }}
+                    </form>
+                </div>
 
             </div>
         </div>
