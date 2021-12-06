@@ -31,6 +31,7 @@ def create_app(config_name=None):
 
 
 def register_logging(app):
+    app.logger.setLevel(logging.INFO)
     class RequestFormatter(logging.Formatter):
 
         def format(self, record):
