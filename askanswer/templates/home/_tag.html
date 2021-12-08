@@ -8,7 +8,7 @@
             <p class="card-text" data-id="{{ tag.id }}"
                data-href="{{ url_for('admin.edit_tag_content', tag_id=tag.id) }}"
                data-content="{{ tag.content|safe }}"
-               id="content{{ tag.id }}"> {{ tag.content|striptags|truncate(length=72, end='...') }}</p>
+               id="content{{ tag.id }}"> {{ tag.content|safe|striptags|truncate(length=72, end='...') }}</p>
             <small class="text-muted">{{ tag.question_num }} Questions</small>
             <div class="d-flex justify-content-between align-items-center align-self-end">
                 <div class="btn-group">

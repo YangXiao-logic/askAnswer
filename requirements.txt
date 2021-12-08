@@ -1,0 +1,14 @@
+bootstrap-flask==1.8.0
+click==8.0.3
+flask==2.0.2
+flask-moment==1.0.2
+flask-sqlalchemy==2.5.1
+flask-wtf==1.0.0
+jinja2==3.0.3
+sqlalchemy==1.4.27
+flask-login==0.5.0
+flask-migrate==3.1.0
+bootstrap-flask==1.8.0
+flask-ckeditor==0.4.6
+flask-whooshee==0.8.1
+werkzeug==2.0.2
