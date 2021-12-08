@@ -15,10 +15,20 @@
                             <div class="mb-3">
                                 {{ form.name.label(class="form-label") }}
                                 {{ form.name(class="form-control") }}
+                                {% for message in form.name.errors %}#}
+                                    <div class="invalid-feedback">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
                             </div>
                             <div class="mb-3">
                                 {{ form.content.label(class="form-label") }}
                                 {{ form.content(class="form-control", rows="5") }}
+                                {% for message in form.content.errors %}#}
+                                    <div class="invalid-feedback">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
                             </div>
                             <div class="mb-3">
                                 <div class="col-2 form-group position-relative">

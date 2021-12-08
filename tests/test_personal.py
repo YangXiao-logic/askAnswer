@@ -20,11 +20,13 @@ class PersonalTestCase(unittest.TestCase):
         normal_user.set_password('123456')
 
         tag = Tag(name='java', content='java content')
-        question = Question(title='test title', content='test content', user_id=1, tag_id=1)
+        tag2 = Tag(name='python', content='python content')
+        question = Question(title='test title', content='test content', user_id=1)
+        question.tags.append(tag)
         answer = Answer(content='test answer content', question=question, user_id=1)
         db.session.add(normal_user)
         db.session.add(admin_user)
-        db.session.add_all([tag, question, answer])
+        db.session.add_all([tag, tag2, question, answer])
 
         db.session.commit()
         self.login()
@@ -60,6 +62,7 @@ class PersonalTestCase(unittest.TestCase):
             title='test question edit',
             content='test question edit content',
             tag=1,
+            tag2=2,
             user=current_user
         ), follow_redirects=True)
         data = response.get_data(as_text=True)

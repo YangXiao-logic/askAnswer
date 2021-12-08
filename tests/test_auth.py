@@ -21,7 +21,8 @@ class AuthTestCase(unittest.TestCase):
         normal_user.set_password('123456')
 
         tag = Tag(name='java', content='java content')
-        question = Question(title='test title', content='test content', user_id=1, tag_id=1)
+        question = Question(title='test title', content='test content', user_id=1)
+        question.tags.append(tag)
         answer = Answer(content='test answer content', question=question, user_id=1)
         db.session.add(normal_user)
         db.session.add(admin_user)

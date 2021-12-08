@@ -24,7 +24,6 @@ def new_tag():
     if form.validate_on_submit():
         name = form.name.data
         content = form.content.data
-
         tag = Tag(name=name, content=content)
         db.session.add(tag)
         db.session.commit()
@@ -64,13 +63,14 @@ def edit_tag_content(tag_id):
 @admin_required
 def delete_question(question_id):
     question = Question.query.get_or_404(question_id)
-    if current_user.is_admin == False:
+    if not current_user.is_admin:
         return jsonify(message='Permission denied')
     for answer in question.answers:
         db.session.delete(answer)
     db.session.delete(question)
     question.user.question_num -= 1
-    question.tag.question_num -= 1
+    for tag in question.tags:
+        tag.question_num -= 1
     db.session.commit()
     return jsonify(message='question deleted')
 
@@ -80,7 +80,7 @@ def delete_question(question_id):
 @admin_required
 def delete_answer(answer_id):
     answer = Answer.query.get_or_404(answer_id)
-    if current_user.is_admin == False:
+    if not current_user.is_admin:
         return jsonify(message='Permission denied')
     db.session.delete(answer)
     answer.question.answer_num -= 1
@@ -94,12 +94,8 @@ def delete_answer(answer_id):
 @admin_required
 def delete_tag(tag_id):
     tag = Tag.query.get_or_404(tag_id)
-    if current_user.is_admin == False:
+    if not current_user.is_admin:
         return jsonify(message='Permission denied')
-    for question in tag.questions:
-        for answer in question:
-            db.session.delete(answer)
-        db.session.delete(question)
     db.session.delete(tag)
     db.session.commit()
     return jsonify(message='tag deleted')
@@ -110,7 +106,7 @@ def delete_tag(tag_id):
 @admin_required
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
-    if current_user.is_admin == False:
+    if not current_user.is_admin:
         return jsonify(message='Permission denied')
     for question in user.questions:
         for answer in question.answers:

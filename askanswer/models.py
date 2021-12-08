@@ -37,11 +37,19 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
 
+association_table = db.Table('association_table',
+                             db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+                             db.Column('question_id', db.Integer, db.ForeignKey('question.id'))
+                             )
+
+
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True)
     content = db.Column(db.String(512))
-    questions = db.relationship('Question', back_populates='tag')
+    questions = db.relationship('Question',
+                                secondary=association_table,
+                                back_populates='tags')
     question_num = db.Column(db.Integer, default=0)
 
 
@@ -55,8 +63,9 @@ class Question(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', back_populates='questions')
 
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
-    tag = db.relationship('Tag', back_populates='questions')
+    tags = db.relationship('Tag',
+                           secondary=association_table,
+                           back_populates='questions')
 
     answers = db.relationship('Answer', back_populates='question')
     answer_num = db.Column(db.Integer, default=0)

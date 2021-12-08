@@ -28,14 +28,17 @@ class LoginForm(FlaskForm):
 
 class QuestionForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(1, 128)])
-    content = CKEditorField('Content', validators=[DataRequired()])
-    tag = SelectField('Tag', coerce=int, default=1)
+    content = CKEditorField('Content', validators=[DataRequired(), Length(1, 512)])
+    tag = SelectField('Tag1', coerce=int, default=1)
+    tag2 = SelectField('Tag2', coerce=int, default=2)
     publish = SubmitField('Publish Question')
 
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
         self.tag.choices = [(tag.id, tag.name)
                             for tag in Tag.query.order_by(Tag.question_num).all()]
+        self.tag2.choices = [(tag.id, tag.name)
+                             for tag in Tag.query.order_by(Tag.question_num).all()]
 
 
 class AnswerForm(FlaskForm):

@@ -12,7 +12,7 @@
                     <div class="mb-3">
                         {{ form.title.label(class="form-label") }}
                         {{ form.title(class="form-control") }}
-                        {% for message in form.content.errors %}
+                        {% for message in form.title.errors %}
                             <div class="invalid-feedback">
                                 {{ message }}
                             </div>
@@ -21,7 +21,14 @@
                     <div class="form-group">
                         {{ form.tag.label(class='form-label') }}
                         {{ form.tag(class='form-select mb-1') }}
-                        {% for message in form.content.errors %}
+                        {% for message in form.tag.errors %}
+                            <div class="invalid-feedback">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        {{ form.tag2.label(class='form-label') }}
+                        {{ form.tag2(class='form-select mb-1') }}
+                        {% for message in form.tag2.errors %}
                             <div class="invalid-feedback">
                                 {{ message }}
                             </div>

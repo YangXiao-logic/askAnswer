@@ -10,7 +10,11 @@
                     <div class="card-header">
                         <h5 class="mb-1">{{ question.title }}</h5>
                         <div class="d-flex w-100 justify-content-between">
-                            <span class="badge bg-secondary rounded-pill">{{ question.tag.name }}</span>
+                            <div>
+                                {% for tag in question.tags %}
+                                    <span class="badge bg-secondary rounded-pill">{{ tag.name }}</span>
+                                {% endfor %}
+                            </div>
                             <small>{{ moment(question.timestamp).format('LL') }} Asked
                                 by {{ question.user.username }}</small>
                         </div>

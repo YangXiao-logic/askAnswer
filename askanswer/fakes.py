@@ -33,16 +33,20 @@ def fake_tags():
 def fake_questions(count=100):
     for i in range(count):
         user = User.query.get(random.randint(1, User.query.count()))
-        tag = Tag.query.get(random.randint(1, Tag.query.count()))
-        question = Question(title=fake.sentence(),
-                            content=fake.paragraph(),
-                            timestamp=fake.date_time_this_century(),
-                            tag=tag,
-                            user=user
-                            )
-        tag.question_num += 1
-        user.question_num += 1
-        db.session.add(question)
+        tag1 = Tag.query.get(random.randint(1, Tag.query.count()))
+        tag2 = Tag.query.get(random.randint(1, Tag.query.count()))
+        if tag1 != tag2:
+            question = Question(title=fake.sentence(),
+                                content=fake.paragraph(),
+                                timestamp=fake.date_time_this_century(),
+                                user=user
+                                )
+            question.tags.append(tag1)
+            tag1.question_num += 1
+            question.tags.append(tag2)
+            tag2.question_num += 1
+            user.question_num += 1
+            db.session.add(question)
     db.session.commit()
 
 

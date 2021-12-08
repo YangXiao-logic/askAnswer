@@ -1,4 +1,4 @@
-from flask import flash, redirect, url_for, render_template, Blueprint, request
+from flask import flash, redirect, url_for, render_template, Blueprint, request, current_app
 from flask_login import login_required, current_user
 from askanswer.forms import QuestionForm, AnswerForm
 from askanswer.models import Question, Tag, User, Answer
@@ -11,18 +11,28 @@ personal_bp = Blueprint('personal', __name__)
 def edit_question():
     if not current_user.is_authenticated:
         flash('Please Ask Question after Login', 'warning')
+        current_app.logger.warning('Please Ask Question after Login')
         return redirect(url_for('auth.login'))
     form = QuestionForm()
     if form.validate_on_submit():
         title = form.title.data
         content = form.content.data
-        tag = Tag.query.get(form.tag.data)
-        question = Question(title=title, content=content, user=current_user, tag=tag)
-        tag.question_num += 1
+        tag1 = Tag.query.get(form.tag.data)
+        tag2 = Tag.query.get(form.tag2.data)
+        if tag1 == tag2:
+            flash("Tag1 can not equal to tag2", 'warning')
+            current_app.logger.warning('Tag1 can not equal to tag2')
+            return redirect(url_for('personal.edit_question'))
+        question = Question(title=title, content=content, user=current_user)
+        question.tags.append(tag1)
+        question.tags.append(tag2)
+        tag1.question_num += 1
+        tag2.question_num += 1
         current_user.question_num += 1
         db.session.add(question)
         db.session.commit()
         flash('Ask question success', ' Info')
+        current_app.logger.info('Ask question success')
         return redirect(url_for('home.index'))
     return render_template('personal/edit_question.html', form=form)
 
@@ -31,6 +41,7 @@ def edit_question():
 def edit_answer(question_id):
     if not current_user.is_authenticated:
         flash('Please Answer Question after Login', 'warning')
+        current_app.logger.warning('Please Answer Question after Login')
         return redirect(url_for('auth.login'))
     form = AnswerForm()
     if form.validate_on_submit():
@@ -42,6 +53,7 @@ def edit_answer(question_id):
         db.session.add(answer)
         db.session.commit()
         flash('Answer submit success', ' Info')
+        current_app.logger.info('Answer submit success')
         return redirect(url_for('home.show_question', question_id=question_id))
     return render_template('personal/edit_answer.html', form=form)
 
