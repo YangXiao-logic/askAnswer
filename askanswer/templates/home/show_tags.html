@@ -1,27 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Tags{% endblock %}
 
-{#    <div class="container">#}
-{#        <div class="row">#}
-{#            {% for tag in tags %}#}
-{#                <div class="col-sm-4">#}
-{#                    <div class="card">#}
-{#                        <div class="card-body">#}
-{#                            <h5 class="card-title">{{ tag.name }}</h5>#}
-{#                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>#}
-{#                            <p class="card-text">Some quick example text to build on the card title and make up the bulk#}
-{#                                of#}
-{#                                the#}
-{#                                card's content.</p>#}
-{#                            <a href="#" class="card-link">Card link</a>#}
-{#                            <a href="#" class="card-link">Another link</a>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{##}
-{#    </div>#}
+
 {% block content %}
     <div class="container">
         <div class="row">
@@ -31,31 +11,16 @@
             <div class="col-sm-9">
                 <div class="album py-5 bg-light">
                     <div class="container">
+                        {% if current_user.is_admin %}
+                            <a class="btn btn-primary mb-3" href="{{ url_for('admin.new_tag') }}" role="button">New
+                                Tag</a>
 
+                        {% endif %}
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                            {% for tag in tags %}
-                                <div class="col">
-                                    <div class="card shadow-sm">
 
-                                        <h5 class="card-title text-center mt-3">{{ tag.name }}</h5>
-                                        <div class="card-body">
-                                            <p class="card-text">This is a wider card with supporting text below as a
-                                                natural
-                                                lead-in to additional content. This content is a little bit longer.</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary">
-                                                        View
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary">
-                                                        Edit
-                                                    </button>
-                                                </div>
-                                                <small class="text-muted">9 mins</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            {% for tag in tags %}
+                                {% include 'home/_tag.html' %}
+
                             {% endfor %}
                         </div>
                     </div>

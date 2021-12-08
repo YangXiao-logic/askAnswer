@@ -16,25 +16,32 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <p class="card-text">{{ question.content }}</p>
+                        <p class="card-text">{{ question.content|safe }}</p>
                     </div>
                 </div>
                 <h4>{{ question.answer_num }} Answers</h4>
-                <div class="list-group list-group-numbered list-group-flush">
+                <div class="list-group list-group-flush">
                     {% for answer in answers %}
                         <li class="list-group-item list-group-item-action">
-                            <p class="mb-3">{{ answer.content }}</p>
+                            <p class="mb-3">{{ answer.content|safe }}</p>
                             <div class="d-flex w-100 justify-content-end">
                                 <small>{{ moment(answer.timestamp).format('LL') }} Answered
                                     by {{ answer.user.username }} </small>
                             </div>
+                            {% if current_user.is_admin %}
+
+                                <button type="button" class="btn btn-outline-danger delete-btn"
+                                        data-href="{{ url_for('admin.delete_answer', answer_id=answer.id) }}"
+                                        aria-label="Close">Delete
+                                </button>
+                            {% endif %}
                         </li>
 
                     {% endfor %}
 
                 </div>
-
-
+                <a class="btn btn-primary" href="{{ url_for('personal.edit_answer', question_id=question.id) }}"
+                   role="button">Click there to answer question</a>
             </div>
         </div>
     </div>

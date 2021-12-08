@@ -21,6 +21,7 @@ class Admin(db.Model, UserMixin):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    is_admin = db.Column(db.Boolean, default=False)
     username = db.Column(db.String(30), unique=True)
     password_hash = db.Column(db.String(128))
 

@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, Blueprint
+from flask import render_template, flash, redirect, url_for, Blueprint, current_app
 from flask_login import login_user, logout_user, current_user
 from askanswer.extension import db
 from askanswer.models import User
@@ -18,6 +18,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         flash('New user registered.', 'Success')
+        current_app.logger.info('New user registered.')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
 
@@ -39,10 +40,13 @@ def login():
             if user.validate_password(password):
                 login_user(user, remember)
                 flash('Login success.', 'info')
+                current_app.logger.info('Login success.')
                 return redirect(url_for('home.index'))
-            flash('Invalid username or password.')
+            flash('Invalid username or password.', 'warning')
+            current_app.logger.warning('Invalid username or password.')
         else:
             flash('No account.', 'warning')
+            current_app.logger.warning('No account.')
     return render_template('auth/login.html', form=form)
 
 
@@ -51,4 +55,5 @@ def login():
 def logout():
     logout_user()
     flash('Logout success.', 'info')
+    current_app.logger.info('Logout success.')
     return redirect(url_for('home.index'))

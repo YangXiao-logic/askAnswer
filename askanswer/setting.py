@@ -11,7 +11,7 @@ else:
 
 
 class BaseConfig(object):
-    SECRET_KEY = os.getenv('\x12\xf6\xf0H\x14\x99<&@\xb3\x9c\x1e', 'dev key')
+    SECRET_KEY = os.getenv('secret key', 'dev key')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

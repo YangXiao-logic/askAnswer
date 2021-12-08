@@ -1,0 +1,35 @@
+<div class="col">
+    <div class="card shadow-sm card-height">
+
+        <h5 class="card-title text-center mt-3" data-id="{{ tag.id }}"
+            data-href="{{ url_for('admin.edit_tag_name', tag_id=tag.id) }}"
+            data-name="{{ tag.name }}" id="name{{ tag.id }}">{{ tag.name }}</h5>
+        <div class="card-body row">
+            <p class="card-text" data-id="{{ tag.id }}"
+               data-href="{{ url_for('admin.edit_tag_content', tag_id=tag.id) }}"
+               data-content="{{ tag.content|safe }}"
+               id="content{{ tag.id }}"> {{ tag.content|striptags|truncate(length=72, end='...') }}</p>
+            <small class="text-muted">{{ tag.question_num }} Questions</small>
+            <div class="d-flex justify-content-between align-items-center align-self-end">
+                <div class="btn-group">
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="{{ url_for('home.show_tag', tag_id=tag.id) }}"
+                       role="button">View</a>
+                    {% if current_user.is_admin %}
+                        <a class="btn btn-sm btn-outline-secondary edit-btn-name"
+                           role="button">Name</a>
+                        <a class="btn btn-sm btn-outline-secondary edit-btn-content"
+                           role="button">Content</a>
+                        <button type="button" class="btn btn-sm btn-outline-danger delete-tag"
+                                data-href="{{ url_for('admin.delete_tag', tag_id=tag.id) }}"
+                                aria-label="Close">Delete
+                        </button>
+
+                    {% endif %}
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

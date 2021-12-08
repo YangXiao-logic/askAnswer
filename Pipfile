@@ -15,6 +15,7 @@ flask-migrate = "*"
 bootstrap-flask = "*"
 flask-ckeditor = "*"
 flask-whooshee = "*"
+werkzeug = "*"
 
 [dev-packages]
 faker = "*"

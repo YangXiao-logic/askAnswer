@@ -5,7 +5,11 @@
             <div class="d-grid gap-1 d-md-flex justify-content-md-end">
                 <a href="{{ url_for('home.show_question', question_id=question.id) }}"
                    class="list-group-item list-group-item-action">
-                    <h5 class="mb-1">{{ question.title }}</h5>
+                    <div class="d-flex w-100 justify-content-between">
+
+                        <h5 class="mb-1">{{ question.title|striptags|truncate(length=144, end='...') }}</h5>
+
+                    </div>
                     <div class="d-flex w-100 justify-content-between">
                         <span class="badge bg-secondary rounded-pill">{{ question.tag.name }}</span>
                         <small>{{ moment(question.timestamp).format('LL') }} Asked
@@ -14,7 +18,13 @@
                 </a>
                 <a class="btn btn-outline-success" href="{{ url_for('home.show_question', question_id=question.id) }}"
                    role="button">{{ question.answer_num }} answers</a>
+                {% if current_user.is_admin %}
 
+                    <button type="button" class="btn btn-outline-danger delete-btn"
+                            data-href="{{ url_for('admin.delete_question', question_id=question.id) }}"
+                            aria-label="Close">Delete
+                    </button>
+                {% endif %}
             </div>
 
         {% endfor %}
@@ -45,10 +55,9 @@
                         </li>
                     {% endif %}
                 {% else %}
-                    {#                        <li>#}
-                    {#                            <span class="ellipsis"#}
-                    {#                                  style="white-space; nowrap; overflow: hidden; text-overflow: ellipsis">…</span>#}
-                    {#                        </li>#}
+                    <li class="page-item">
+                        <a class="page-link text-dark">...</a>
+                    </li>
                 {% endif %}
             {% endfor %}
 
@@ -62,5 +71,10 @@
             {% endif %}
         </ul>
     </nav>
+{% else %}
+    <h2>No results.</h2>
 {% endif %}
+
+
+
 

@@ -10,7 +10,7 @@
             </div>
             <div class="col-sm-9">
                 {% block filter %}{% include 'home/_filter.html' %}{% endblock %}
-                {% include 'home/_questions.html' %}
+                {% block questions %}{% include 'home/_questions.html' %}{% endblock %}
             </div>
         </div>
     </div>

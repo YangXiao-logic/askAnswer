@@ -16,6 +16,9 @@ def fake_users(count=15):
             db.session.add(user)
         except IntegrityError:
             db.session.rollback()
+    user = User(username='admin', is_admin=True)
+    user.set_password('admin')
+    db.session.add(user)
     db.session.commit()
 
 

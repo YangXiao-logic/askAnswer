@@ -15,8 +15,11 @@
     <div class="d-flex w-100 justify-content-between mb-3">
         <h5 class="mb-1">{{ tag.question_num }} questions</h5>
         <div class="btn-group me-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-outline-secondary">Newest</button>
-            <button type="button" class="btn btn-outline-secondary mr-2">Active</button>
+            <a class="btn btn-outline-secondary" href="{{ url_for('home.show_tag', filter='newest', tag_id=tag.id) }}"
+               role="button">Newest</a>
+            <a class="btn btn-outline-secondary mr-2"
+               href="{{ url_for('home.show_tag', filter='active', tag_id=tag.id) }}"
+               role="button">Active</a>
             <button class="btn btn-success" type="submit">Filter</button>
         </div>
     </div>

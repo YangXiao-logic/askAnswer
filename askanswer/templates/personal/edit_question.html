@@ -1,12 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form method="post">
-        {{ form.csrf_token }}
-        {{ form.title }}
-        {{ form.tag }}
-        {{ form.content }}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                {% include 'home/_sidebar.html' %}
+            </div>
+            <div class="col-sm-9">
+                <form method="post">
+                    {{ form.csrf_token }}
+                    <div class="mb-3">
+                        {{ form.title.label(class="form-label") }}
+                        {{ form.title(class="form-control") }}
+                        {% for message in form.content.errors %}
+                            <div class="invalid-feedback">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.tag.label(class='form-label') }}
+                        {{ form.tag(class='form-select mb-1') }}
+                        {% for message in form.content.errors %}
+                            <div class="invalid-feedback">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.content(class="form-control", rows="6") }}
+                    </div>
 
-    </form>
+                    <div class="col-2 form-group position-relative">
+                        {{ form.publish(class='btn btn-secondary') }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
 {% endblock %}

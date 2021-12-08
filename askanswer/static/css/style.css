@@ -5,6 +5,11 @@
     margin: auto;
 }
 
+.card-height {
+    height: 230px;
+}
+
+
 .btn-toggle {
     display: inline-flex;
     align-items: center;

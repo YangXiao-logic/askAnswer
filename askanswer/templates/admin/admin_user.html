@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Admin Users{% endblock %}
 
-</body>
-</html>
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                {% include 'home/_sidebar.html' %}
+            </div>
+            <div class="col-sm-9">
+                <div class="album py-5 bg-light">
+                    <div class="container">
+
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                            {% for user in users %}
+                                <div class="col">
+                                    <div class="card shadow-sm">
+
+                                        <h5 class="card-title text-center mt-3">{{ user.username }}</h5>
+                                        <div class="card-body row">
+                                            <p class="card-text">{{ user.question_num }} Questions</p>
+                                            <p class="card-text">{{ user.answer_num }} Answers</p>
+                                            <div class="d-flex justify-content-between align-items-center align-self-end">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-sm btn-outline-secondary"
+                                                       href="{{ url_for('personal.show_personal_question', user_id=user.id) }}"
+                                                       role="button">View</a>
+                                                    {% if current_user.is_admin %}
+                                                        <button type="button"
+                                                                class="btn btn-sm btn-outline-danger delete-user"
+                                                                data-href="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                                                                aria-label="Close">Delete
+                                                        </button>
+                                                    {% endif %}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

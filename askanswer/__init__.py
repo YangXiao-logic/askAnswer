@@ -1,14 +1,14 @@
 import os
 import logging
-from logging.handlers import SMTPHandler, RotatingFileHandler
+from logging.handlers import RotatingFileHandler
 from flask import Flask, request
-from flask_login import current_user
 
 from askanswer.extension import db, login_manager, moment, csrf, migrate, bootstrap, ckeditor, whooshee
 from askanswer.models import Question, User, Answer, Tag
 from askanswer.setting import config
 from askanswer.blueprints.auth import auth_bp
 from askanswer.blueprints.home import home_bp
+from askanswer.blueprints.admin import admin_bp
 from askanswer.blueprints.personal import personal_bp
 import click
 
@@ -32,17 +32,12 @@ def create_app(config_name=None):
 
 def register_logging(app):
     app.logger.setLevel(logging.INFO)
-    class RequestFormatter(logging.Formatter):
 
+    class RequestFormatter(logging.Formatter):
         def format(self, record):
             record.url = request.url
             record.remote_addr = request.remote_addr
             return super(RequestFormatter, self).format(record)
-
-    request_formatter = RequestFormatter(
-        '[%(asctime)s] %(remote_addr)s requested %(url)s\n'
-        '%(levelname)s in %(module)s: %(message)s'
-    )
 
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -70,6 +65,7 @@ def register_blueprints(app):
     app.register_blueprint(home_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(personal_bp, url_prefix='/personal')
+    app.register_blueprint(admin_bp, url_prefix='/admin')
 
 
 def register_template_context(app):
@@ -99,9 +95,9 @@ def register_command(app):
         click.echo('Initialized database.')
 
     @app.cli.command()
-    @click.option('--user', default=5, help='Quantity of users, default is 5.')
-    @click.option('--question', default=30, help='Quantity of questions, default is 30.')
-    @click.option('--answer', default=100, help='Quantity of answers, default is 100.')
+    @click.option('--user', default=15, help='Quantity of users, default is 5.')
+    @click.option('--question', default=100, help='Quantity of questions, default is 30.')
+    @click.option('--answer', default=300, help='Quantity of answers, default is 100.')
     def forge(user, question, answer):
         from askanswer.fakes import fake_users, fake_questions, fake_answers, fake_tags
         """Generate fake data."""
