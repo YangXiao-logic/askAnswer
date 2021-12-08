@@ -11,12 +11,19 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebars.css') }}"
           type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cookies.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
-
     {% block css %}{% endblock %}
 
 </head>
 <body>
+<div class="popup-screen">
+    <div class="popup-box">
+        <h2>Cookies</h2>
+        <p>We promise that we will never give out your information on that cookies.</p>
+        <i class="close-btn">Accept cookies</i>
+    </div>
+</div>
 {% block nav %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5" aria-label="Ninth navbar example">
         <div class="container-xl">
@@ -53,7 +60,7 @@
                     {% endif %}
                 </ul>
                 <form action="{{ url_for('home.search_question') }}">
-                    <input class="form-control" type="text" placeholder="Search" aria-label="Search"
+                    <input class="form-control" type="text" placeholder="Search Question" aria-label="Search"
                            name="search_question">
                 </form>
                 <ul class="navbar-nav mb-2 mb-lg-0">

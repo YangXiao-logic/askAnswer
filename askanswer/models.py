@@ -6,7 +6,6 @@ from askanswer.extension import whooshee
 from askanswer.extension import db
 
 
-
 class Admin(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     admin_name = db.Column(db.String(30))
